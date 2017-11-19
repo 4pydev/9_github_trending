@@ -1,3 +1,4 @@
+import requests
 
 
 def get_trending_repositories(top_size):
