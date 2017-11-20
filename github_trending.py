@@ -1,10 +1,12 @@
 import requests
+from datetime import date, timedelta
 
 
 def get_trending_repositories(top_size):
+    boundary_date = date.today() - timedelta(days=7)
     github_url = "https://api.github.com/search/repositories"
     search_params = {
-        'q': 'created:>2017-11-12',
+        'q': 'created:>{}'.format(boundary_date),
         'page': '1',
         'per_page': top_size,
         'sort': 'stars',
