@@ -6,7 +6,7 @@ def get_trending_repositories(top_size):
     search_params = {
         'q': 'created:>2017-11-12',
         'page': '1',
-        'per_page': str(top_size),
+        'per_page': top_size,
         'sort': 'stars',
         'order': 'desc'
     }
@@ -17,12 +17,10 @@ def get_trending_repositories(top_size):
 
 
 def get_open_issues_amount(repo_owner, repo_name):
-    github_issues_url = "https://api.github.com/repos" + "/" + \
-                         repo_owner + "/" + repo_name + "/issues"
-    search_params = {
-        'state': 'open'
-    }
-    response = requests.get(github_issues_url, search_params)
+    github_issues_url = "https://api.github.com/repos/{owner}/{repo}/issues"\
+                         .format(owner=repo_owner, repo=repo_name)
+
+    response = requests.get(github_issues_url)
 
     return len(response.json())
 
