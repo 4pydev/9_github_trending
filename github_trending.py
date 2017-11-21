@@ -3,10 +3,10 @@ from datetime import date, timedelta
 
 
 def get_trending_repositories(top_size):
-    boundary_date = date.today() - timedelta(days=7)
+    one_week_ago_date = date.today() - timedelta(days=7)
     github_url = "https://api.github.com/search/repositories"
     search_params = {
-        'q': 'created:>{}'.format(boundary_date),
+        'q': 'created:>{}'.format(one_week_ago_date),
         'page': '1',
         'per_page': top_size,
         'sort': 'stars',
@@ -19,10 +19,10 @@ def get_trending_repositories(top_size):
 
 
 def get_open_issues_amount(repo_owner, repo_name):
-    github_issues_url = "https://api.github.com/repos/{owner}/{repo}/issues"\
-                         .format(owner=repo_owner, repo=repo_name)
+    issues_url = "https://api.github.com/repos/{owner}/{repo}/issues".format(
+                  owner=repo_owner, repo=repo_name)
 
-    response = requests.get(github_issues_url)
+    response = requests.get(issues_url)
 
     return len(response.json())
 
@@ -35,9 +35,12 @@ if __name__ == '__main__':
         repo_open_issues = get_open_issues_amount(repo['owner']['login'],
                                                   repo['name'])
         print('-------------------------------------')
-        print("Repository owner: {owner}\nRepository name: {name}\nURL: {repo_url}"
-              "\nOpen issues: {issues}"
-            .format(owner=repo['owner']['login'],
-                    name=repo['name'],
-                    repo_url=repo['owner']['html_url']+'/'+repo['name'],
-                    issues=repo_open_issues))
+        print("Repository owner: {owner}\nRepository name: {name}"
+              "\nURL: {repo_url}\nOpen issues: {issues}"
+              .format(owner=repo['owner']['login'],
+                      name=repo['name'],
+                      repo_url='{owners_html_url}/{repo_name}'
+                               .format(
+                               owners_html_url=repo['owner']['html_url'],
+                               repo_name=repo['name']),
+                               issues=repo_open_issues))
