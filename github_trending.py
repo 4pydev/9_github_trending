@@ -43,4 +43,4 @@ if __name__ == '__main__':
                                .format(
                                owners_html_url=repo['owner']['html_url'],
                                repo_name=repo['name']),
-                               issues=repo_open_issues))
+                      issues=repo_open_issues))
